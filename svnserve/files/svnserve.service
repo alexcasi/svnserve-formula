@@ -1,0 +1,19 @@
+[Unit]
+Description=Subversion protocol daemon
+After=syslog.target network.target
+
+[Service]
+Type=forking
+RuntimeDirectory=svnserve
+PIDFile=/run/svnserve/svnserve.pid
+EnvironmentFile=/etc/default/svnserve
+ExecStart=/usr/bin/svnserve --daemon $DAEMON_ARGS --pid-file /run/svnserve/svnserve.pid
+ExecReload=/bin/kill -s SIGHUP $MAINPID
+User=svn
+Group=svn
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=svnserve.service

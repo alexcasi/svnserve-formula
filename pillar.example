@@ -1,0 +1,5 @@
+svnserve:
+  root: /var/svn/repos
+  log_directory: /var/log/svnserve
+  user: svn
+  group: svnusers

@@ -1,0 +1,16 @@
+{% import_yaml 'svnserve/defaults.yaml' as defaults %}
+{% import_yaml 'svnserve/osmap.yaml' as osmap %}
+
+{# get the settings for the os_family grain #}
+{% set osfam = salt['grains.filter_by'](osmap) or {} %}
+
+{# merge the os family/codename specific data over the defaults #}
+{% do defaults.svnserve.update(osfam) %}
+
+{# merge the pillar:lookup dict into the defaults/os specific dict #}
+{% set lookup = salt['pillar.get']('svnserve:lookup',
+                                   default=defaults.svnserve,
+                                   merge=True) %}
+
+{# merge the actual svnserve pillar into the above combined dict #}
+{% set svnserve = salt['pillar.get']('svnserve', default=lookup, merge=True) %}
