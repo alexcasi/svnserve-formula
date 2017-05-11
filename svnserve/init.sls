@@ -54,6 +54,15 @@ svnserve_service_default:
         root: {{ svnserve.root }}
     - watch_in:
       - service: svnserve_service
+
+# TODO: *BSD support
+svnserve_umask_wrapper:
+  file.managed:
+    - name: /usr/local/bin/svnserve
+    - source: salt://svnserve/files/svnserve_umask_wrapper.sh
+    - mode: 755
+    - user: root
+    - group: root
 {% endif %}
 
 svnserve_service:
